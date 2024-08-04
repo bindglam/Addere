@@ -2,3 +2,8 @@ self-host:
   enabled: false
   ip: localhost
   port: 25569
+external-host:
+  enabled: false
+  ip: ""
+resourcepack:
+  prompt: "<yellow><bold>You need to accept the resourcepack to play this server!"
