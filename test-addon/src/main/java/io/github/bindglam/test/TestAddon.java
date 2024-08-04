@@ -13,7 +13,7 @@ public class TestAddon {
     public TestAddon(Addere addere){
         addere.getPlugin().getLogger().info("Test Addon is initialized!");
 
-        addere.getCustomItemManager().register(new CustomItem(new NamespacedKey(addere.getPlugin(), "test-item"), new ItemBuilder(Material.PAPER).itemName(Component.text("test"))
+        addere.getCustomItemManager().register(new CustomItem(new NamespacedKey("test-addon", "test-item"), new ItemBuilder(Material.PAPER).itemName(Component.text("test"))
                 .setModelPath("test-addon:item/test-model")));
     }
 }

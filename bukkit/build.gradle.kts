@@ -5,6 +5,7 @@ plugins {
 }
 
 repositories {
+    maven(url = "https://repo.codemc.org/repository/maven-public/")
 }
 
 dependencies {
@@ -14,6 +15,7 @@ dependencies {
     api(project(":api"))
 
     implementation("commons-io:commons-io:2.16.1")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.5.1")
 
     compileOnly("dev.folia:folia-api:1.20.6-R0.1-SNAPSHOT")
 }
@@ -32,6 +34,7 @@ tasks {
 
         dependencies {
             include(project(":api"))
+            include(dependency("dev.jorel:commandapi-bukkit-shade:9.5.1"))
         }
     }
 }

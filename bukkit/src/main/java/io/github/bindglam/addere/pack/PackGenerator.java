@@ -66,6 +66,10 @@ public class PackGenerator {
             }
         }
 
+        File resoucepackZip = new File("plugins/Addere/resourcepack.zip");
+        if(resoucepackZip.exists())
+            resoucepackZip.delete();
+
         try {
             ZipUtil.pack("plugins/Addere/resourcepack", "plugins/Addere/resourcepack.zip");
         } catch (IOException e) {

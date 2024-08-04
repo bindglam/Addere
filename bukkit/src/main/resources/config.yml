@@ -1,0 +1,4 @@
+self-host:
+  enabled: false
+  ip: localhost
+  port: 25569

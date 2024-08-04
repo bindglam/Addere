@@ -1,0 +1,4 @@
+fail_get_item: "<red><bold>Unknown item!"
+success_get_item: "<green><bold>You have successfully acquired the item! ( %key% )"
+reloading: "<yellow>Reloading..."
+reload_complete: "<green>Reloaded successfully!"

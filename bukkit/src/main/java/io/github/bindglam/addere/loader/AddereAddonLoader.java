@@ -4,6 +4,7 @@ import io.github.bindglam.addere.AdderePlugin;
 import io.github.bindglam.addere.addons.AddereAddon;
 import io.github.bindglam.addere.api.Addere;
 import io.github.bindglam.addere.api.addons.AddonInfo;
+import io.github.bindglam.addere.api.addons.IAddon;
 import io.github.bindglam.addere.api.addons.loader.IAddonLoader;
 import io.github.bindglam.addere.api.utils.JarUtil;
 import org.apache.commons.io.FileUtils;
@@ -96,6 +97,7 @@ public class AddereAddonLoader implements IAddonLoader<AddereAddon> {
         addons.remove(addon);
     }
 
+    @Override
     public List<AddereAddon> getAddons(){
         return addons;
     }
