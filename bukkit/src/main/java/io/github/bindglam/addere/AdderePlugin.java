@@ -1,14 +1,23 @@
 package io.github.bindglam.addere;
 
+import io.github.bindglam.addere.addons.AddereAddon;
 import io.github.bindglam.addere.api.Addere;
 import io.github.bindglam.addere.api.addons.loader.IAddonLoader;
+import io.github.bindglam.addere.api.items.CustomItem;
+import io.github.bindglam.addere.api.utils.IEnrollmentManager;
+import io.github.bindglam.addere.items.CustomItemManager;
 import io.github.bindglam.addere.loader.AddereAddonLoader;
+import io.github.bindglam.addere.pack.PackGenerator;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.TimeUnit;
 
 public class AdderePlugin extends JavaPlugin implements Addere {
     public static Addere INSTANCE;
 
     private final AddereAddonLoader loader = new AddereAddonLoader();
+    private final CustomItemManager itemManager = new CustomItemManager();
 
     @Override
     public void onEnable() {
@@ -28,6 +37,10 @@ public class AdderePlugin extends JavaPlugin implements Addere {
         loader.loadAll();
 
         saveDefaultConfig();
+
+        Bukkit.getAsyncScheduler().runDelayed(this, (task) -> {
+            PackGenerator.generate();
+        }, 2L, TimeUnit.SECONDS);
     }
 
     @Override
@@ -56,7 +69,12 @@ public class AdderePlugin extends JavaPlugin implements Addere {
     }
 
     @Override
-    public IAddonLoader getLoader() {
+    public AddereAddonLoader getLoader() {
         return loader;
+    }
+
+    @Override
+    public CustomItemManager getCustomItemManager() {
+        return itemManager;
     }
 }

@@ -6,6 +6,7 @@ import io.github.bindglam.addere.api.Addere;
 import io.github.bindglam.addere.api.addons.AddonInfo;
 import io.github.bindglam.addere.api.addons.loader.IAddonLoader;
 import io.github.bindglam.addere.api.utils.JarUtil;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class AddereAddonLoader implements IAddonLoader<AddereAddon> {
             addonsFolder.mkdirs();
 
         for(File addonFile : Objects.requireNonNull(addonsFolder.listFiles())){
-            new Thread(() -> load(addonFile)).start();
+            Bukkit.getAsyncScheduler().runNow(AdderePlugin.INSTANCE.getPlugin(), (task) -> load(addonFile));
         }
     }
 
@@ -47,12 +48,22 @@ public class AddereAddonLoader implements IAddonLoader<AddereAddon> {
             throw new RuntimeException("Failed to load " + addonFile.getName() + "!", e);
         }
 
+        boolean didCopyResources = false;
         for(String className : classNames){
             Class<?> clazz;
             try {
                 clazz = Class.forName(className, true, child);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("Failed to load addon's class!", e);
+            }
+
+            if(!didCopyResources) {
+                didCopyResources = true;
+                try {
+                    JarUtil.copyFolderFromJar(clazz, "assets", new File("plugins/Addere/resourcepack"), JarUtil.CopyOption.REPLACE_IF_EXIST);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to copy addon's resources!", e);
+                }
             }
 
             for(Constructor<?> constructor : clazz.getDeclaredConstructors()){
