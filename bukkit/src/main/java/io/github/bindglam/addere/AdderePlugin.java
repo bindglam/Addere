@@ -69,12 +69,7 @@ public class AdderePlugin extends JavaPlugin implements Addere {
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
-        WebServer.isRunning.set(false);
-        try {
-            WebServer.serverSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to close webserver!", e);
-        }
+        WebServer.close();
         saveConfig();
     }
 

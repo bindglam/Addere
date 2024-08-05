@@ -54,6 +54,15 @@ public class WebServer implements Consumer<ScheduledTask> {
         }
     }
 
+    public static void close(){
+        WebServer.isRunning.set(false);
+        try {
+            WebServer.serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to close webserver!", e);
+        }
+    }
+
     private static void handleRequests() throws IOException {
         httpRequestParser = new HTTPRequestParser(inputStream);
 
@@ -195,12 +204,11 @@ public class WebServer implements Consumer<ScheduledTask> {
 }
 
 class HTTPRequestParser {
-
     private String requestMethod, fileName, queryString, formData;
     private Hashtable<String, String> headers;
     private int[] ver;
 
-    public HTTPRequestParser(InputStream is) {
+    public HTTPRequestParser(InputStream is) throws IndexOutOfBoundsException {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         requestMethod = "";
         fileName = "";
@@ -218,12 +226,15 @@ class HTTPRequestParser {
                 return;
             }
 
+            // Shows Client requests in server log.
+            //System.out.println("Request: " + line);
+
             String[] tokens = line.split(" ");
 
             requestMethod = tokens[0];
 
             if (tokens[1].contains("?")) {
-                String urlComponents[] = tokens[1].split("\\?");
+                String[] urlComponents = tokens[1].split("\\?");
                 fileName = urlComponents[0];
                 queryString = urlComponents[1];
             } else {
@@ -286,7 +297,7 @@ class HTTPRequestParser {
     public static List<File> fileList(String directoryName) {
         File directory = new File(directoryName);
 
-        List<File> resultList = new ArrayList<File>();
+        List<File> resultList = new ArrayList<>();
 
         // get all the files from the directory
         File[] fileList = directory.listFiles();
